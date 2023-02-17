@@ -1,0 +1,89 @@
+All data on 1-23-2023 was on Windows OS and the project/system had water in it. (Note: the data shows there exist electromagnetic interference on the USB line whenever power was given to the motor).
+
+---Using the Maono USB Cable Start---
+1-25-2023--8-29-26: Windows + Water + New USB cable by Maono. Noise whenever motor is consuming around 300 mA of power is still present. Will check if noise may not just be from rising strain by manual force.
+1-25-2023--8-43-14: Same as prior entry except did manual force on strain gauge. The noise upon strain increase is most certainly from EMF interference on the USB. It also must come from the suppling of power on the motors
+			as things such as routers and the like are still present and active. Unsure what exactly is the most source of EMF. The powersupply, the powersupply cables, the motor driver?. [NOTE: a 10 uF capacitor
+			was present on the power line to the strain gauge]
+1-25-2023--8-50-6: Same as entry 1-25-2023--8-29-26 except it had the capacitor explained in entry 1-25-2023--8-43-14. The same noise on 300 mA motor power is present confirming that is simply EMF interference not powersupply
+			instability on the strain guage.
+1-25-2023--9-3-27: Applied some aluminum foil around the Arduino and the severity of the noise is no different than entry 1-25-2023--8-50-6. However, this entry and 1-25-2023--8-50-6 do appear to be slightly less severe than
+			entry 1-25-2023--8-29-26 which did not have the powerline capacitor. [Note: severity is being measured in amount of outlier data present]. the difference is around 41 outliers vs ~30 outliers, and likely
+			the result of random chance.
+---Using the Maono USB Cable End---
+
+This presense of noise on the strain data shines importance in concepts such as the Kalman filter. I will employ my own kind of filter for learning purposes and perhaps in the far future employ something more sophisiticated
+such as the Kalman filter.
+
+1-27-2023--10-44-59: "Real" data trial 1. While the negative numbers issue was resolved there still exists some outlier problems with values that jump too steeply that need to also be filled out. Will implement some sort of
+			rate based filtering where if values deviate grow/shrink too quickly the prior value is used instead.
+
+2-1-2023--10-14-4: Excellent data generated with the algorithm I created to filter out outliers live during data collection.
+
+---Bypass Capacitor Testing---
+2-8-2023--13-39-42: This test run uses had a 47 uF on the power rail of the Arduino in charge of the water pump. The data came out clean due to the algorithm being enabled.
+2-8-2023--13-50-39: This test run disabled the use of the algorithm and had the same capacitor mentioned for today. The data had some spikes early on, but does appear less serve then usual.
+2-8-2023--14-2-38: No capacitor in this run and no algorithm either. There were a few spikes and the data actually looks better than with the capacitor.
+
+2-8-2023--14-13-27: The strain gauge sensor was connected to the power rail of the pump arduino and the data had an terrible amount of spikes. Note: no 47 uF was attahched.
+2-8-2023--14-21-9: Same as prior entry except 47 uF capacitor was added. The data spikes did not improve.
+2-8-2023--14-32-11: Same as prior entry except a 470 uF capacitor was added. The data spikes did not improve.
+2-8-2023--14-43-45: Same as prior entry except a 0.1 uF capacior was added. The data spikes did not improve.
+
+2-8-2023--14-56-22: Decoupled the power between the pump arduino and the scale arduino but made it all on the same breadboard (meaning EMI can occur). Essentially like entry
+	2-8-2023-14-2-38 except crossing over the pump arduino. The spikes did not improve
+2-8-2023--15-2-59: Essentially did the standard decoupling of power rails except without the the EMI crossing and the data spikes DID improve.
+
+2-8-2023--15-32-34: I physically spaced out the two arduino's onto seperate height levels and the data looks better relative to when EMI pathing was allowed, but worse than when
+	the two arduino's were together. (Note: I had disconnected the 0.1 uF capacitor I had left behind as well on the pump power rail.)
+2-8-2023--15-39-47: Same as prior entry except put a 47 uF capacitor on the pump power rail. The data spikes did not improve.
+2-8-2023--15-52-39: Same as prior entry except added a 47 uF capacitor on the strain power rail. The data spikes appear to have worsen relative to the prior entry.
+2-8-2023--16-2-8: Same as prior entry except added a 470 uF capacitor on the power supply that goes to the motor. The data spikes did not improve.
+
+2-8-2023--16-8-39: Same as prior entry except put the water hose more into the tank as to minimize vibrations from water entering the system and hitting the surface tension.
+2-8-2023--16-13-32: Same as prior entry except put the water tank on the farther screw hole rather than the closer to the base screw hole. The data spikes did not improve.
+2-8-2023--16-20-52: Same as prior entry arranged things so the water tank is floating more in the air and not potentially being supported by the bin it rests on. No improvement.
+
+2-8-2023--16-30-55: Used algorithm I created, massive improvement. The spike length was specified to be two samples long. One massive data spike made it through need to improve the algorithm.
+2-8-2023--16-38-31: Same as prior entry except increased spike length to be three samples long. Did this not help to eliminate the occasional massive spike when using the algorithm.
+
+---Updated Algorithm---
+2-9-2023--13-47-42 & 2-9-2023--13-57-6: Very sucessful cases of the algorithm filtering out bad data generated by the strain sensor and being able to handle the rare freezing as well.
+
+2-9-2023--14-11-7 & 2-9-2023--14-24-14: Real data based on my updated algorithm and will be used to generate the final transfer function I will use for the plant.
+
+2-9-2023--18-11-36: Real data taken for around 10 minutes. The data suggests that the weird transfer functions I have been getting really do model my system. I need to learn how to control it.
+
+2-12-2023--17-49-29: Applied Farday fabric around my scale arduino and scale sensor and the data spikes did not improve. The fabric does work when I tested it on my phone and bluetooth so the issue isn't the fabric.
+2-12-2023--17-55-0: Prior as before except I did a manual test where I applied force on the scale and tapped on it to simulate noise that could be the cause of data spikes as when water hits the base and vibrates the tank.
+	It did not come even close to causing the data spikes. Either I need to apply more Faraday fabric or just cover the strain sensor and not put it so close to the arduino.
+2-12-2023--18-1-3: Applied more Faraday fabric to the center chunk of the scale arduino and scale sensor and no improvement on the data spikes.
+2-12-2023--18-10-21: Turned on the pump to full power (300 mA) and did manual application of force on the scale. The data spikes are still there except it seems less frequent.
+2-12-2023--18-13-19: No pump power and performed a sort of stress test on the strain gauge where I would apply force in the two extremes to see if a obsurd spikes would occur.
+2-12-2023--18-15-7: Same test as prior except turned the pump fully on and did observe some data spikes.
+2-12-2023--18-17-30: Same test as prior except applied no force on the strain gauge. Data spikes were observed meaning it truely is an EMI problem. Even the test stopped by itself (as if the button was pushed).
+2-12-2023--18-21-53: Same as prior except I covered my power supply with Fraday fabric. The data shows that the strain sensor issues only happen whenever the motor is powered.
+2-12-2023--18-36-10: Same test except applied more Faraday fabic over the strain load sensor specifically. Did not improve spikes.
+2-12-2023--18-40-33: Same as before except removed the extra applied Faraday fabric over the strain load sensor.
+2-12-2023--18-48-10: Same as before except removed all the Farday fabric I placed on the strain arduino and strain sensor. It seems the farday fabric did assist in reducing the spikes.
+2-12-2023--18-55-36: Applied some Farday fabric on the end piece of the strain sensor and the spikes are still present.
+
+2-13-2023--9-25-7: Algorithm disabled, seperated the motor driver and motor pump to be farther away from the Arduino's. Data did not improve.
+2-13-2023--9-32-52: Algorithm disabled, removed capacitor and breadboard I placed for the strain sensor power lines. Improved data spikes.
+	It seems that the strain gauge hates any noise source nearby, including the capacitor and breadboard that was placed intended to improve any power issues.
+2-13-2023--9-37-44: Redid the same as 2-13-2023--9-32-52 and the data improvements are not a fluke.
+2-13-2023--9-44-50: Redid the same as 2-13-2023--9-32-52 and the data improvements are not a fluke.
+	I accidently disconnected one of the strain wires that needs to be soldered back on. I will just improve the soldering with headers and wait for the headers to arrive to continue experimenting.
+	So far good progress has been made.
+
+2-13-2023--21-7-40: After doing better soldering on the strain guage by adding sockets and header pins the data spikes are greater than they were without the new solder in 2-23-2023--9-44-50.
+2-13-2023--21-15-24: Same as prior except I wrapped up the strain guage circuit with Faraday fabric inside an electrostatic proof bag and the data spikes improved dramatically.
+2-13-2023--21-36-46: Same as prior except I applied some Faraday fabric onto the the strain guage sensor itself and there was some improvement. However, a thing that isn't being captured by my analysis methods is
+	that there can occur serious freezing from time to time even if there is no associated data spike with it. Such extremely long delay times seem to have came with applying wrap to the strain sensor itself.
+2-13-2023--21-59-40: Removed the Faraday fabric from the strain guage sensor and the data does not look as good as it did in 2-13-2023--21-15-24 despite being the exact same configuration. (Note: this time more water was in the
+	plastic container) Having the Faraday fabric on the strain sensor itself produces bad results.
+2-14-2023--17-11-50: Used new programs I made where the strain Arduino operates indefinately and the pump Arduino becomes the mastermind collector and transmitter of data. Note the motor was not powered on during the test.
+	The new programs work well to collect and transmit data.
+
+My EMF meter arrived and I found that the motor and its associated wire is what is generating so much noise around 350 V/m ~ 400 V/m if not greater. I will be using plastic boxes and applying Faraday fabric around the motor
+	and wire in order to control the spread of noise.
