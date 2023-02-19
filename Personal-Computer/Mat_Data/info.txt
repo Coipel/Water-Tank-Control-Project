@@ -87,3 +87,58 @@ such as the Kalman filter.
 
 My EMF meter arrived and I found that the motor and its associated wire is what is generating so much noise around 350 V/m ~ 400 V/m if not greater. I will be using plastic boxes and applying Faraday fabric around the motor
 	and wire in order to control the spread of noise.
+
+---2-16-2023---
+Note: I have put the two Arduino's on the same level as well as with the main breadboard.
+11-28-46: I made a new "Design-3" program which utilizing stopping the pump motor whenever taking a data sample or transmitting data as to prevent EMI where it matters most. 
+	Used a poweroff_delay of 100 ms with a powered_delay of 500 ms. Worked with no data spikes/freezing.
+11-38-35: Used a poweroff_delay of 50 ms with a powered_delay of 500 ms. Worked with no data spikes/freezing.
+22-11-1: Excellent results with only one data spike. Improved my program code. Used a poweroff_delay of 10 ms with a powered_delay of 500 ms.
+22-20-0: Excellent results with only one data spike. Used a poweroff_delay of 10 ms with a powered_delay of 500 ms. Same as 22-11-1 except I removed a 47 uF capacitor on the main breadboard I was using to see if it was the
+	source of the spike.
+22-28-44: Excellent result with no data spikes. Used a poweroff_delay of 25 ms with a powered_delay of 500 ms.
+22-35-50: Excellent result with 3~4 data spikes. Used a poweroff_delay of 25 ms with a powered_delay of 500 ms. (Recall no 47 uF capactior) I connected the power and ground of the scale sensor to the main breadboard. These
+	good data results suggests that it may be possible to move all functionality into a single Arduino.
+22-43-6: Same as prior setup except I added the 47 uF capacitor to the power rail of the breadboard and put it on the farther end relative to the scale sensor wires. No data spikes were observed. Some ambiguity was happening
+	for the potentiometer voltage however, but this is easily resovled when the potentiometer is no longer relevant to the design and is instead a control system (computer) generated signal.
+	 Used a poweroff_delay of 25 ms with a powered_delay of 500 ms. Perhaps I should look into reducing the current draw from my button and potentiometer by increasing the resistance of both.
+
+---2-17-2023---
+13-12-16: Unifed the two arduino roles back into one arduino. There is a different kind of data spike where it isn't nearly as high but still is incorrect data that is changing too much relative to the actual value
+	that is expected to be measured. (Had 47 uF capacitor on Arduino power rail). Used a poweroff_delay of 100 ms with a powered_delay of 500 ms. Sample time 2000 ms.
+13-24-29: Same as before except removed the 47 uF capacitor. The data started off good, but progressively became noisier and even a data spike was present.
+14-4-23: I seperated the power rails where 5 V goes to the strain sensor and 3.3 V goes to everything else. There is still noise on the strain sensor line, but it is managable and reasonable amounts. Question is, where
+	is this noise coming from considering I poweroff the motor during the sampling? Is the potentiometer really generating that much noise? Used a poweroff_delay of 200 ms with a powered_delay of 500 ms.
+	Sample time 1000 ms with clean_operating_delay of 50.
+14-24-40: Same as prior except no clean_operating_delay used. Good data with reasonable fluxulations during step input.
+15-16-50: Reduced poweroff_delay to 50 ms and had good data with reasonable fluxulations. I also tweaked the voltage input mapping to be more accurate.
+15-34-47: Same as prior except had potentiometer value at 0 V and instead made the input programmed in the Arduino.
+15-53-47: Same as prior except used poweroff_delay 500 ms and powered_delay of 1000 ms with sample_time 2000 ms. Most beautiful data I have seen yet.
+16-16-0: Same as prior except incorporated the potentiometer gain. The data is also beautiful.
+16-33-36: Same as prior except coupled the two power rails back into one power rail set at 5 V (no 47 uF capacitor). The data is still beautiful.
+	It looks like I will have to stick with my system having around a sample time of around 2 seconds (2000 ms) whenever I design a digital control system
+
+*Real Data for System Identification* (One motor pump)
+Note: My data comes where the tank is connected to the inner hole of the strain sensor.
+2-17-2023--16-33-36: Excellent data (full step response)
+2-17-2023--17-43-31: Excellent data (random inputs)
+2-17-2023--18-12-50: Excellent data (random inputs)
+
+It was learned that perhaps I shouldn't be including the nonlinear portion into my data for it results in the pid tuner designing for a plant it thinks is capable of producing a meaningful output below a certain lower bound.
+In my system around a valve input of around 118~119 the motor is no longer capable of providing water into the tank. So the input free range for my transfer function isn't 0~255, but rather 0~137 where 0 is associated to
+around 118 or 119. Will collect new data in this linear region only.
+
+20-41-21: First data I collected in the linear region only (random inputs)
+20-58-51: Excellent data (full step response)
+
+---2-18-2023---
+17-37-58: Partially sucessful control system observed. However, I had noticed and after corrected that the water tank and bin needed to be off the wooden platform so the tank properly hung and good weight measurements could 
+	be made such as those resembling the plant transfer function developed.
+18-10-2: Extremely good starting control system. The system properly measured the strain and was tracking the setpoint well. A steady state error was observed, but this is to excepted considering it is only a proportional based
+	controller and the fact that the strain sensor has error in itself. I am satisfied with the project and will collect more data to confirm that things continue to work. Will take some data on seperate days as well.
+18-55-35: Excellent control system. Essentially another run of something like 18-10-2 with other random setpoints.
+19-2-38: Also excellent, but this data is just the control system going from 0 to maximum water (~40) and tracking it. It really shows off the steady state error, but also the system there is at its
+	physical limits.
+
+
+
