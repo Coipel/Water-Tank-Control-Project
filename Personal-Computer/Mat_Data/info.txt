@@ -140,5 +140,12 @@ around 118 or 119. Will collect new data in this linear region only.
 19-2-38: Also excellent, but this data is just the control system going from 0 to maximum water (~40) and tracking it. It really shows off the steady state error, but also the system there is at its
 	physical limits.
 
+---2-19-2023---
+11-29-13: Excellent control system behavior even after performing the refactoring on "p_controller_w_saturation.ino" by adding some more files and introducing some object-orientated programming. I am unsure why, but for the
+	first like three entries after the starting 0 sec the time is not as cleanly regulated as it is for all the remaining sampling time data. [NOTE]: I actually found the problem and its that my variable
+	"sampling_regulator_ms" wasn't properly initalized. I am surprised the code even worked at all (whatever garbage was in the memory slot was being used which is why the code still ran). I did a quick test and when not
+	initalized to the "sampling_time_ms" it instead is equal to 0 rather than garbage (maybe this is some sort of c++ 11 kind of result).
+12-12-43: Same as prior entry except implemented the prior fix and it results in excellent sampling regulation at all times including the beginning where some issues were noticed.
+
 
 
