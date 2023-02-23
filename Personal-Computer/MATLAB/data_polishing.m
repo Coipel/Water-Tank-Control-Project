@@ -4,12 +4,10 @@ format compact;
 ENABLE_PRELIMINARY_TRANSFERFUNCTION = false;
 ENABLE_SAVING_DATA = false;
 
-sample_time = 0.2;
+sample_time = 2;
 
-data_directory = "../Mat_Data";
-filename = "data-2-16-2023--10-9-39.mat";
-data_path = strcat(data_directory, filename);
-load(data_path); 
+filename = "data-2-18-2023--19-2-38.mat";
+load(filename); 
 strain_data = double(SD); % This may be unnecessary since datatype is float in Python
 valve_data = double(VD);
 time_data_sec = double(TD)/1000;
@@ -44,16 +42,17 @@ grid on;
 plot(time_data_sec, strain_data, 'xb--');
 plot(dense_time_data_sec, dense_strain_data, 'r--');
 xlabel("Time (sec)");
-ylabel("Strain (0-N/A)")
+ylabel("Strain (0-40)")
 hold off;
 
 data = iddata(dense_strain_data, dense_valve_data, sample_time);
 if ENABLE_SAVING_DATA == true
     save(strcat("Saved-Processed-Data\iddata-", filename), 'data');
+    disp(strcat(filename, " has been saved"));
 end
 
 if ENABLE_PRELIMINARY_TRANSFERFUNCTION == true
-    Gs = tfest(data, 4)
+    Gs = tfest(data, 2)
     [n,d] = tfdata(Gs,'V');
     disp("zeros:");
     disp(roots(n));

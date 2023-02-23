@@ -21,6 +21,8 @@ unsigned int valve[data_size];
 unsigned long time[data_size];
 float setpoint[data_size];
 
+float error;
+
 bool transmitted_data = false;
 
 bool process_started = false;
@@ -38,7 +40,7 @@ void setup() {
   pinMode(BUILTIN_LED_PIN, OUTPUT);
   pinMode(BUTTON_PIN, INPUT);
 
-  // ---Initalizing motor driver standby pin---
+  // ---Initalizing motor driver PWM pin---
   pump.setup(MOTOR_PIN);
 
   // ---Initalizing indicator LED to inform on the state of the program---
@@ -81,7 +83,7 @@ void loop() {
     strain[i] = scale.get_units();
     
     setpoint[i] = map(analogRead(POTENTIOMETER_PIN), 0, 1023, 0, 40);
-    float error = setpoint[i] - strain[i]; 
+    error = setpoint[i] - strain[i]; 
     valve[i] = round(p_controller.accuation(error));
     pump.run(map(valve[i], 0, 137, 118, 255));
 

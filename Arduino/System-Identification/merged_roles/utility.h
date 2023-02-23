@@ -2,6 +2,7 @@
 class SamplingTimeEnforcer {
   private:
     unsigned long reference_time_ms;
+    unsigned long time_elapsed_ms;
     unsigned long sampling_time_ms;
     unsigned long sampling_regulator_ms;
 
@@ -24,16 +25,4 @@ class PumpControl {
     void setup(const int motor_pin);
     void stop();
     void run(int strength);
-};
-
-//---Class for P controller conveniently---
-class P_Controller {
-  private:
-    float P;
-    float lowerbound_saturation;
-    float upperbound_saturation;
-
-  public:
-    P_Controller(float P, float lowerbound_saturation, float upperbound_saturation);
-    float accuation(float error);
 };
