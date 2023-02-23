@@ -22,10 +22,12 @@ $$G(s) = \frac{0.001717189366905s+0.000003715745070}{s^2 + 0.006449893164376s + 
 -Blue data represents actual data, whereas red data is preprocessed interpolated data for system identification purposes (not as necessary as it was early on in the project when there was no sample time regulation).
 -Top subplot: Shows how much power the liquid pump is given between the integer values 0-137 called valve.
 -Bottom subplot: Shows what the current strain value is in the blue/red curve and what the setpoint for that moment in time is in green.
+
 ![P-Controller Results](Captains-Log/Images/sucessful_p_control_system.png)
 
 **For the below image:**
 -Green is still the setpoint as in the prior image, whereas the blue curve and red curve represents the strain for a given time. This image is a portion of the above image. The zoom allows to view the steady state error that exists between a setpoint and a strain not visible in the prior image. This error exists at all the regions where it appears the setpoint and strain meet in the prior image not just around $strain = 40$ where the system starts to each its physical limits.
+
 ![Steady State Error](Captains-Log/Images/steady_state_error.png)
 
 ## Using the Programs
