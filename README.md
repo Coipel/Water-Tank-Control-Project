@@ -2,9 +2,6 @@
 
 ~Old version_1 code and documentation is stored on its own version_1 branch.
 
-<<<<<<< HEAD
-Video of version_2 application and physical system operating approximately synchronized. (Click image to start video)
+Video of version_2 application and physical system operating approximately synchronized. 
 
-[![video](Documents/app_w_tank_sync_thumbnail.png)](Documents/app_w_tank_sync_vid_compressed.mp4)
-=======
->>>>>>> parent of 7cd3280 (added demo video)
+<iframe src="https://drive.google.com/file/d/1o0jkeF46v7vBPC5VXpt_xlBDHdA0jtG9/preview" width="640" height="480" allow="autoplay"></iframe>
